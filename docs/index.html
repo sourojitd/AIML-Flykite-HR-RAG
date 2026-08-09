@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Oxanium:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=3" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
   <nav class="site-nav" id="nav" aria-label="Primary">
@@ -45,35 +45,40 @@
       </div>
       <svg class="flight-planes" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice">
         <defs>
-          <linearGradient id="jetBody" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stop-color="#9eb6d4"/>
-            <stop offset="55%" stop-color="#e7eef8"/>
+          <linearGradient id="jetBody" x1="0" y1="0.5" x2="1" y2="0.5">
+            <stop offset="0%" stop-color="#7f98b8"/>
+            <stop offset="45%" stop-color="#e7eef8"/>
             <stop offset="100%" stop-color="#3de7ff"/>
           </linearGradient>
-          <filter id="softGlow" x="-40%" y="-40%" width="180%" height="180%">
-            <feGaussianBlur stdDeviation="2.2" result="b"/>
+          <linearGradient id="jetWing" x1="0.5" y1="0" x2="0.5" y2="1">
+            <stop offset="0%" stop-color="#c9d7ea"/>
+            <stop offset="100%" stop-color="#3de7ff"/>
+          </linearGradient>
+          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="1.8" result="b"/>
             <feMerge>
               <feMergeNode in="b"/>
               <feMergeNode in="SourceGraphic"/>
             </feMerge>
           </filter>
+          <!-- Side-view airliner used by each departure -->
+          <g id="airliner">
+            <ellipse class="jet-trail" cx="-18" cy="28" rx="34" ry="5" opacity="0.35"/>
+            <path class="jet-shape" d="M8 30
+              C18 24, 40 20, 70 19
+              L118 18 L150 19 L168 21 L176 24
+              L168 27 L150 29 L118 30
+              L86 31 L70 32 L48 34 L28 35 L14 34 Z"/>
+            <path fill="url(#jetWing)" d="M72 22 L108 8 L118 10 L92 24 Z"/>
+            <path fill="url(#jetWing)" d="M78 30 L104 48 L114 45 L90 31 Z" opacity="0.85"/>
+            <path fill="#d7e6f7" d="M150 19 L164 12 L168 14 L156 22 Z"/>
+            <circle class="jet-light" cx="174" cy="24" r="2.6"/>
+            <circle cx="96" cy="34" r="2" fill="#f0a202" opacity="0.9"/>
+          </g>
         </defs>
-        <!-- Three staggered departures; CSS delays create continuous runway ops -->
-        <g class="jet jet-a" filter="url(#softGlow)">
-          <path class="jet-shape" d="M12 40 L78 34 L118 28 L148 24 L168 22 L178 20 L170 26 L148 30 L118 36 L86 44 L70 50 L58 56 L48 52 L56 46 L40 44 Z"/>
-          <circle class="jet-light" cx="172" cy="22" r="2.4"/>
-          <path class="jet-trail" d="M12 40 C -20 42, -50 44, -90 46"/>
-        </g>
-        <g class="jet jet-b" filter="url(#softGlow)">
-          <path class="jet-shape" d="M12 40 L78 34 L118 28 L148 24 L168 22 L178 20 L170 26 L148 30 L118 36 L86 44 L70 50 L58 56 L48 52 L56 46 L40 44 Z"/>
-          <circle class="jet-light" cx="172" cy="22" r="2.4"/>
-          <path class="jet-trail" d="M12 40 C -20 42, -50 44, -90 46"/>
-        </g>
-        <g class="jet jet-c" filter="url(#softGlow)">
-          <path class="jet-shape" d="M12 40 L78 34 L118 28 L148 24 L168 22 L178 20 L170 26 L148 30 L118 36 L86 44 L70 50 L58 56 L48 52 L56 46 L40 44 Z"/>
-          <circle class="jet-light" cx="172" cy="22" r="2.4"/>
-          <path class="jet-trail" d="M12 40 C -20 42, -50 44, -90 46"/>
-        </g>
+        <use class="jet jet-a" href="#airliner" filter="url(#softGlow)"/>
+        <use class="jet jet-b" href="#airliner" filter="url(#softGlow)"/>
+        <use class="jet jet-c" href="#airliner" filter="url(#softGlow)"/>
       </svg>
       <div class="flight-wash"></div>
     </div>
@@ -280,6 +285,6 @@
     <span><a href="https://github.com/sourojitd/AIML-Flykite-HR-RAG">View repository</a></span>
   </footer>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
 </body>
 </html>
