@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flykite HR Policy Q&A — Sourojit Dhua</title>
+  <meta name="description" content="Grounded RAG assistant for Flykite Airlines HR policy — built by Sourojit Dhua. Retrieve, cite, comply." />
+  <meta name="author" content="Sourojit Dhua" />
+  <meta property="og:title" content="Flykite HR Policy Q&A — Sourojit Dhua" />
+  <meta property="og:description" content="End-to-end NLP + RAG capstone: LLM baseline → prompt engineering → FAISS RAG → tuned retrieval." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Oxanium:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="site-nav" id="nav" aria-label="Primary">
+    <a class="brand-mark" href="#top">Flykite <span>HR RAG</span></a>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#overview">Overview</a>
+      <a href="#pipeline">Pipeline</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#topics">Topics</a>
+      <a href="#results">Results</a>
+      <a href="#author">Author</a>
+    </div>
+  </nav>
+
+  <header class="hero wrap" id="top">
+    <div class="hero-atmosphere" aria-hidden="true">
+      <div class="grid-fade"></div>
+      <div class="horizon"></div>
+      <div class="runway"></div>
+      <div class="beacon b1"></div>
+      <div class="beacon b2"></div>
+      <div class="beacon b3"></div>
+    </div>
+    <div class="hero-copy">
+      <p class="eyebrow">Sourojit Dhua · NLP + RAG Capstone</p>
+      <h1>Flykite HR Policy <span class="accent">Q&amp;A</span></h1>
+      <p class="hero-lead">Grounded answers from the official handbook — retrieved, cited, and tuned for compliance-safe self-service.</p>
+      <div class="cta-row">
+        <a class="btn btn-primary" href="https://huggingface.co/spaces/sourojitd/airline-hr-policy-bot" target="_blank" rel="noopener">Live Demo</a>
+        <a class="btn btn-ghost" href="https://github.com/sourojitd/AIML-Flykite-HR-RAG/blob/main/Sourojit_FlykiteHRPolicyQnA_FinalReport.pdf" target="_blank" rel="noopener">Read Report</a>
+        <a class="btn btn-amber" href="https://github.com/sourojitd/AIML-Flykite-HR-RAG" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="overview">
+      <div class="wrap reveal">
+        <p class="section-label">01 · Overview</p>
+        <h2>Policy answers employees can verify</h2>
+        <p class="section-lead">
+          A dense 14-page HR handbook creates ticket load and compliance risk when people guess.
+          This project compares LLM-only, prompt-engineered, and RAG approaches — then sweeps six retrieval configs —
+          so every answer can be traced to handbook evidence.
+        </p>
+        <div class="metric-strip">
+          <div class="metric">
+            <strong>0.734</strong>
+            <span>Best combined score (C3)</span>
+          </div>
+          <div class="metric">
+            <strong>0.867</strong>
+            <span>Fact coverage after tuning</span>
+          </div>
+          <div class="metric">
+            <strong>6</strong>
+            <span>Retrieval configs swept</span>
+          </div>
+          <div class="metric">
+            <strong>4-bit</strong>
+            <span>Qwen3-4B on Colab T4</span>
+          </div>
+        </div>
+        <p class="copyright-note">
+          The Flykite Airlines HR handbook PDF (dataset booklet) could not be uploaded to the public repository as it is copyrighted.
+        </p>
+      </div>
+    </section>
+
+    <section id="pipeline">
+      <div class="wrap reveal">
+        <p class="section-label">02 · Pipeline explorer</p>
+        <h2>From handbook to cited answer</h2>
+        <p class="section-lead">Step through the production path used in the research notebook. Select a stage to inspect what changes and why.</p>
+        <div class="pipeline">
+          <div class="pipeline-steps" role="tablist" aria-label="Pipeline stages" id="pipelineSteps"></div>
+          <div class="step-panel" role="tabpanel" id="stepPanel" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture">
+      <div class="wrap reveal">
+        <p class="section-label">03 · Architecture</p>
+        <h2>Retrieval constrains generation</h2>
+        <p class="section-lead">
+          Notebook stack: Qwen3-4B Instruct (4-bit) + MiniLM / Qwen3 embeddings + FAISS.
+          Hosted demo: Groq LLaMA 3.3 70B + MiniLM + FAISS on Hugging Face Spaces.
+        </p>
+        <div class="arch">
+          <div class="arch-row">
+            <div class="arch-node">
+              <div class="node-title">Handbook PDF</div>
+              <div class="node-sub">14 pages · extract + clean</div>
+            </div>
+            <div class="arch-node">
+              <div class="node-title">Chunker</div>
+              <div class="node-sub">RecursiveCharacter · overlap</div>
+            </div>
+            <div class="arch-node">
+              <div class="node-title">Embeddings</div>
+              <div class="node-sub">MiniLM 384-d · Qwen3 0.6B</div>
+            </div>
+            <div class="arch-node">
+              <div class="node-title">FAISS</div>
+              <div class="node-sub">Similarity / MMR · top-k</div>
+            </div>
+          </div>
+          <div class="arch-arrow">↓ CONTEXT INJECTION ↓</div>
+          <div class="arch-row">
+            <div class="arch-node">
+              <div class="node-title">HR system prompt</div>
+              <div class="node-sub">Cite · refuse if missing</div>
+            </div>
+            <div class="arch-node">
+              <div class="node-title">Generator</div>
+              <div class="node-sub">Qwen3-4B · temp 0.0</div>
+            </div>
+            <div class="arch-node">
+              <div class="node-title">Citations</div>
+              <div class="node-sub">Page · section · clause</div>
+            </div>
+            <div class="arch-node">
+              <div class="node-title">Eval harness</div>
+              <div class="node-sub">Rel · Gnd · Fact</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="topics">
+      <div class="wrap reveal">
+        <p class="section-label">04 · Topics in depth</p>
+        <h2>Skills a reviewer can verify</h2>
+        <p class="section-lead">Filter by theme, then expand for the concrete technique and where it appears in the work.</p>
+        <div class="topic-filters" id="topicFilters"></div>
+        <div class="topic-list" id="topicList"></div>
+      </div>
+    </section>
+
+    <section id="results">
+      <div class="wrap reveal">
+        <p class="section-label">05 · Results</p>
+        <h2>Retrieval is the dominant lever</h2>
+        <p class="section-lead">
+          Same three benchmark questions across methods. Combined score weights groundedness highest
+          (0.40) for a compliance domain. Winner: <strong style="color:var(--cyan)">C3-large+fewer</strong>.
+        </p>
+        <div style="overflow-x:auto">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th>Method / config</th>
+                <th>Relevance</th>
+                <th>Groundedness</th>
+                <th>Fact coverage</th>
+                <th>Combined</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>LLM only</td>
+                <td class="num">0.765</td>
+                <td class="num">0.489</td>
+                <td class="num">0.244</td>
+                <td class="num">—</td>
+              </tr>
+              <tr>
+                <td>Prompt engineering</td>
+                <td class="num">0.505</td>
+                <td class="num">0.597</td>
+                <td class="num">0.122</td>
+                <td class="num">—</td>
+              </tr>
+              <tr>
+                <td>RAG default (C1)</td>
+                <td class="num">0.713</td>
+                <td class="num">0.608</td>
+                <td class="num">0.811</td>
+                <td class="num">0.700</td>
+              </tr>
+              <tr class="winner">
+                <td>Tuned RAG C3 ★</td>
+                <td class="num">0.688</td>
+                <td class="num">0.669</td>
+                <td class="num">0.867</td>
+                <td class="num">0.734</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">
+          C3 uses 1200/250-character chunks, similarity search, k=3, MiniLM.
+          With three scored queries, treat C3 as the selected prototype — not a proven global optimum.
+        </p>
+      </div>
+    </section>
+
+    <section id="author">
+      <div class="wrap reveal">
+        <div class="author-block">
+          <div>
+            <p class="section-label">06 · Author</p>
+            <h2>Sourojit Dhua</h2>
+            <p class="section-lead" style="margin-bottom:0">
+              Built this end-to-end: evaluation design, retrieval sweeps, grounded prompting, and a public Gradio demo.
+              Portfolio focus — NLP systems that stay honest when the handbook does not support an answer.
+            </p>
+          </div>
+          <div class="author-links">
+            <a class="btn btn-ghost" href="https://github.com/sourojitd" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn btn-ghost" href="https://huggingface.co/sourojitd" target="_blank" rel="noopener">Hugging Face</a>
+            <a class="btn btn-primary" href="https://huggingface.co/spaces/sourojitd/airline-hr-policy-bot" target="_blank" rel="noopener">Open Demo</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer wrap">
+    <span>© <span id="year"></span> Sourojit Dhua · AIML-Flykite-HR-RAG</span>
+    <span><a href="https://github.com/sourojitd/AIML-Flykite-HR-RAG">View repository</a></span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

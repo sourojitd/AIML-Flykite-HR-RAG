@@ -1,0 +1,22 @@
+# Secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Copyrighted dataset
+Dataset*.pdf
+**/Dataset*.pdf
+
+# Python / tooling
+.venv/
+venv/
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
