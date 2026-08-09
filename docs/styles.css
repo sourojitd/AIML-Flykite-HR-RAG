@@ -276,8 +276,9 @@ img {
 
 .jet {
   transform-box: fill-box;
-  transform-origin: center;
+  transform-origin: 50% 50%;
   opacity: 0;
+  will-change: transform, opacity;
 }
 
 .jet-shape {
@@ -296,9 +297,18 @@ img {
   stroke-dasharray: 4 8;
 }
 
-.jet-a { animation: takeoff-a 9s cubic-bezier(0.33, 0.05, 0.35, 1) infinite; }
-.jet-b { animation: takeoff-b 9s cubic-bezier(0.33, 0.05, 0.35, 1) infinite; animation-delay: 3s; }
-.jet-c { animation: takeoff-c 9s cubic-bezier(0.33, 0.05, 0.35, 1) infinite; animation-delay: 6s; }
+.jet-a,
+.jet-b,
+.jet-c {
+  animation-duration: 9s;
+  animation-timing-function: cubic-bezier(0.33, 0.05, 0.35, 1);
+  animation-iteration-count: infinite;
+  animation-fill-mode: both;
+}
+
+.jet-a { animation-name: takeoff-a; }
+.jet-b { animation-name: takeoff-b; animation-delay: 3s; }
+.jet-c { animation-name: takeoff-c; animation-delay: 6s; }
 
 .flight-wash {
   position: absolute;
@@ -896,15 +906,25 @@ section h2 {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-  }
-
   .reveal {
     opacity: 1;
     transform: none;
+    transition: none !important;
+  }
+
+  .jet-a,
+  .jet-b,
+  .jet-c {
+    animation: none !important;
+    opacity: 0.9;
+  }
+
+  .jet-a {
+    transform: translate(360px, 180px) rotate(-14deg) scale(1);
+  }
+
+  .jet-b,
+  .jet-c {
+    opacity: 0;
   }
 }
