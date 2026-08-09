@@ -215,4 +215,42 @@
   }
 
   document.getElementById("year").textContent = String(new Date().getFullYear());
+
+  /* Smooth restart so the takeoff loop feels continuous */
+  const takeoff = document.getElementById("takeoffVideo");
+  if (takeoff) {
+    let cycling = false;
+    const softRestart = () => {
+      if (cycling) return;
+      cycling = true;
+      takeoff.classList.add("is-fading");
+      window.setTimeout(() => {
+        try {
+          takeoff.currentTime = 0;
+          const p = takeoff.play();
+          if (p && typeof p.catch === "function") p.catch(() => {});
+        } catch (_) {
+          /* ignore */
+        }
+        takeoff.classList.remove("is-fading");
+        cycling = false;
+      }, 380);
+    };
+
+    takeoff.addEventListener("ended", softRestart);
+    takeoff.addEventListener("timeupdate", () => {
+      if (!Number.isFinite(takeoff.duration) || takeoff.duration <= 0) return;
+      if (takeoff.duration - takeoff.currentTime < 0.4) softRestart();
+    });
+
+    const ensurePlay = () => {
+      takeoff.muted = true;
+      const p = takeoff.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    };
+    ensurePlay();
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) ensurePlay();
+    });
+  }
 })();
